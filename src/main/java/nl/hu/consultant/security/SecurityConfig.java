@@ -68,6 +68,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/new-user.html",
                         "/Studentoverzicht.html",
                         "/DocentStudentoverzicht.html",
+                        "/recommendation/**",
                         "/css/**",
                         "/script/**").permitAll()
                 .anyRequest().authenticated();
