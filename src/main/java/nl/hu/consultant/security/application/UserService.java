@@ -1,5 +1,6 @@
 package nl.hu.consultant.security.application;
 
+import nl.hu.consultant.security.domain.Role;
 import nl.hu.consultant.security.domain.User;
 import nl.hu.consultant.security.persistence.UserRepository;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -7,6 +8,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 @Transactional
@@ -49,6 +52,10 @@ public class UserService implements UserDetailsService {
     public User loadUserByUsername(String username) throws UsernameNotFoundException {
         return this.userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException(username));
+    }
+
+    public List<User> loadAllUsersByRole(Role role) {
+        return this.userRepository.findByUserRole(role);
     }
 
 }

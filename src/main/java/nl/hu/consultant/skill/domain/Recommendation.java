@@ -3,10 +3,13 @@ package nl.hu.consultant.skill.domain;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity
-@Table(name = "Recommendations")
+@Table(name = "Recommendation")
 public class Recommendation {
     @Id
     @GeneratedValue

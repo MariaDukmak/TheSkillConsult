@@ -10,9 +10,9 @@
 	</parent>
 	<groupId>nl.hu</groupId>
 	<artifactId>consultant</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
-	<name>skilltree consultant</name>
-	<description>Skilltree consultant application</description>
+	<version>1.0</version>
+	<name>Skill consultant</name>
+	<description>Skill consultant application</description>
 	<properties>
 		<java.version>11</java.version>
 	</properties>

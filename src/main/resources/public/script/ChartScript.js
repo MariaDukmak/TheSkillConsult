@@ -1,142 +1,133 @@
-ctx = document.getElementById("myChart");
+fetch("/progress/results", {
+    method: 'POST',
+    body: JSON.stringify({"userId": 0 }),
+    headers: new Headers({'content-type': 'application/json'})})
+    .then(function(response) {
+        return response.text()})
+    .then(function(data) {
+        console.log(data); // this will be a string
+        var Jdata = JSON.parse(data);
+        console.log(Jdata)
+        delete Jdata[0].userId;
+        delete Jdata[0].id;
+        delete Jdata[1].userId;
+        delete Jdata[1].id;
+        console.log(Jdata[0]['socialInitiative'])
 
-labels = [
-    'openness',
-    'cultural empathy',
-    'openmindness',
-    'adaptability',
-    'flexibility',
-    'emotional stability',
-    'social initiative'
-]
+        ctx = document.getElementById("myChart");
 
-data = {
-    labels,
-    datasets: [
-        {
-            data: [
-                5.926,
-                5.926,
-                5.151,
-                3.773,
-                2.664,
-                3.65,
-                5.146],
-            label: "eerste meeting",
-            backgroundColor: 'rgba(255, 99, 132, 0.2)',
-            borderColor: 'rgb(255, 99, 132)',
-            pointBackgroundColor: 'rgb(255, 99, 132)',
-            pointBorderColor: '#fff',
-            pointHoverBackgroundColor: '#fff',
-            pointHoverBorderColor: 'rgb(255, 99, 132)'
-        }, {
-            data: [
-                5.879,
-                5.437,
-                6.275,
-                3.324,
-                2.266,
-                4.174,
-                4.921],
-            label: "tweede meeting",
-            backgroundColor: 'rgba(54, 162, 235, 0.2)',
-            borderColor: 'rgb(54, 162, 235)',
-            pointBackgroundColor: 'rgb(54, 162, 235)',
-            pointBorderColor: '#fff',
-            pointHoverBackgroundColor: '#fff',
-            pointHoverBorderColor: 'rgb(54, 162, 235)'
+        labels = [
+            'openness',
+            'cultural empathy',
+            'openmindness',
+            'adaptability',
+            'flexibility',
+            'emotional stability',
+            'social initiative'
+        ]
+
+        data = {
+            labels,
+            datasets: [
+                {
+                    data: [
+                        Jdata[0]['openness'],
+                        Jdata[0]['culturalEmpathy'],
+                        Jdata[0]['openmindness'],
+                        Jdata[0]['adaptability'],
+                        Jdata[0]['flexibility'],
+                        Jdata[0]['emotionalStability'],
+                        Jdata[0]['socialInitiative']
+                    ],
+                    label: "First measurement",
+                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                    borderColor: 'rgb(255, 99, 132)',
+                    pointBackgroundColor: 'rgb(255, 99, 132)',
+                    pointBorderColor: '#fff',
+                    pointHoverBackgroundColor: '#fff',
+                    pointHoverBorderColor: 'rgb(255, 99, 132)'
+                }, {
+                    data: [
+                        Jdata[1]['openness'],
+                        Jdata[1]['culturalEmpathy'],
+                        Jdata[1]['openmindness'],
+                        Jdata[1]['adaptability'],
+                        Jdata[1]['flexibility'],
+                        Jdata[1]['emotionalStability'],
+                        Jdata[1]['socialInitiative']
+                    ],
+                    label: "Second measurement",
+                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                    borderColor: 'rgb(54, 162, 235)',
+                    pointBackgroundColor: 'rgb(54, 162, 235)',
+                    pointBorderColor: '#fff',
+                    pointHoverBackgroundColor: '#fff',
+                    pointHoverBorderColor: 'rgb(54, 162, 235)'
+                }
+            ]
+        };
+        config = {
+            type: 'radar',
+            data: data,
+
         }
-    ]
-};
-config = {
-    type: 'radar',
-    data: data,
-
-}
-myChart = new Chart(ctx, config);
+        myChart = new Chart(ctx, config);
+    });
 
 function UpdateChart() {
-    var student = document.getElementById("studentsBox");
-    var SelectedStudent = student.options[student.selectedIndex].text;
+    let student = document.getElementById("studentsBox");
+    let SelectedStudent = student.options[student.selectedIndex].value;
 
-    console.log(SelectedStudent);
-    UpdateReccomandation(SelectedStudent);
+    var userId = parseInt(SelectedStudent);
 
+    console.log(userId);
 
     document.querySelector(".myChart").innerHTML = '<canvas id="myChart"></canvas>';
 
-    ctx = document.getElementById("myChart");
+    UpdateRecommendation(userId);
 
-    labels = [
-        'openness',
-        'cultural empathy',
-        'openmindness',
-        'adaptability',
-        'flexibility',
-        'emotional stability',
-        'social initiative'
-    ]
+    fetch("/progress/results", {
+        method: 'POST',
+        body: JSON.stringify({"userId": userId }),
+        headers: new Headers({'content-type': 'application/json'})})
+        .then(function(response) {
+            return response.text()})
+        .then(function(data) {
+            console.log(data); // this will be a string
+            var Jdata = JSON.parse(data);
+            console.log(Jdata)
+            delete Jdata[0].userId;
+            delete Jdata[0].id;
+            delete Jdata[1].userId;
+            delete Jdata[1].id;
+            console.log(Jdata[0]['socialInitiative'])
 
-    data = {
-        labels,
-        datasets: [
-            {
-                data: [
-                    5.926,
-                    5.926,
-                    5.151,
-                    3.773,
-                    2.664,
-                    3.65,
-                    5.146],
-                label: "eerste meeting",
-                backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                borderColor: 'rgb(255, 99, 132)',
-                pointBackgroundColor: 'rgb(255, 99, 132)',
-                pointBorderColor: '#fff',
-                pointHoverBackgroundColor: '#fff',
-                pointHoverBorderColor: 'rgb(255, 99, 132)'
-            }, {
-                data: [
-                    5.879,
-                    5.437,
-                    6.275,
-                    3.324,
-                    2.266,
-                    4.174,
-                    4.921],
-                label: "tweede meeting",
-                backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                borderColor: 'rgb(54, 162, 235)',
-                pointBackgroundColor: 'rgb(54, 162, 235)',
-                pointBorderColor: '#fff',
-                pointHoverBackgroundColor: '#fff',
-                pointHoverBorderColor: 'rgb(54, 162, 235)'
-            }
-        ]
-    };
-    config = {
-        type: 'radar',
-        data: data,
+            ctx = document.getElementById("myChart");
 
-    }
-    myChart = new Chart(ctx, config);
+            labels = [
+                'openness',
+                'cultural empathy',
+                'openmindness',
+                'adaptability',
+                'flexibility',
+                'emotional stability',
+                'social initiative'
+            ]
 
-    switch (SelectedStudent) {
-        case 'Jan':
             data = {
                 labels,
                 datasets: [
                     {
                         data: [
-                            5.926,
-                            5.926,
-                            5.151,
-                            3.773,
-                            2.664,
-                            3.65,
-                            5.146],
-                        label: "eerste meeting",
+                            Jdata[0]['openness'],
+                            Jdata[0]['culturalEmpathy'],
+                            Jdata[0]['openmindness'],
+                            Jdata[0]['adaptability'],
+                            Jdata[0]['flexibility'],
+                            Jdata[0]['emotionalStability'],
+                            Jdata[0]['socialInitiative']
+                        ],
+                        label: "First measurement",
                         backgroundColor: 'rgba(255, 99, 132, 0.2)',
                         borderColor: 'rgb(255, 99, 132)',
                         pointBackgroundColor: 'rgb(255, 99, 132)',
@@ -145,14 +136,15 @@ function UpdateChart() {
                         pointHoverBorderColor: 'rgb(255, 99, 132)'
                     }, {
                         data: [
-                            5.879,
-                            5.437,
-                            6.275,
-                            3.324,
-                            2.266,
-                            4.174,
-                            4.921],
-                        label: "tweede meeting",
+                            Jdata[1]['openness'],
+                            Jdata[1]['culturalEmpathy'],
+                            Jdata[1]['openmindness'],
+                            Jdata[1]['adaptability'],
+                            Jdata[1]['flexibility'],
+                            Jdata[1]['emotionalStability'],
+                            Jdata[1]['socialInitiative']
+                        ],
+                        label: "Second measurement",
                         backgroundColor: 'rgba(54, 162, 235, 0.2)',
                         borderColor: 'rgb(54, 162, 235)',
                         pointBackgroundColor: 'rgb(54, 162, 235)',
@@ -168,98 +160,253 @@ function UpdateChart() {
 
             }
             myChart = new Chart(ctx, config);
-        case 'Piet':
-            data = {
-                labels,
-                datasets: [
-                    {
-                        data: [
-                            5.926,
-                            5.926,
-                            5.151,
-                            3.773,
-                            2.664,
-                            3.65,
-                            5.146],
-                        label: "eerste meeting",
-                        backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                        borderColor: 'rgb(255, 99, 132)',
-                        pointBackgroundColor: 'rgb(255, 99, 132)',
-                        pointBorderColor: '#fff',
-                        pointHoverBackgroundColor: '#fff',
-                        pointHoverBorderColor: 'rgb(255, 99, 132)'
-                    }, {
-                        data: [
-                            5.879,
-                            5.437,
-                            6.275,
-                            3.324,
-                            2.266,
-                            4.174,
-                            4.921],
-                        label: "tweede meeting",
-                        backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                        borderColor: 'rgb(54, 162, 235)',
-                        pointBackgroundColor: 'rgb(54, 162, 235)',
-                        pointBorderColor: '#fff',
-                        pointHoverBackgroundColor: '#fff',
-                        pointHoverBorderColor: 'rgb(54, 162, 235)'
-                    }
-                ]
-            };
-            config = {
-                type: 'radar',
-                data: data,
+        });
 
-            }
 
-            myChart = new Chart(ctx, config);
-        case 'Klaas':
-            data = {
-                labels,
-                datasets: [
-                    {
-                        data: [
-                            5.926,
-                            5.926,
-                            5.151,
-                            3.773,
-                            2.664,
-                            3.65,
-                            5.146],
-                        label: "eerste meeting",
-                        backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                        borderColor: 'rgb(255, 99, 132)',
-                        pointBackgroundColor: 'rgb(255, 99, 132)',
-                        pointBorderColor: '#fff',
-                        pointHoverBackgroundColor: '#fff',
-                        pointHoverBorderColor: 'rgb(255, 99, 132)'
-                    }, {
-                        data: [
-                            5.879,
-                            5.437,
-                            6.275,
-                            3.324,
-                            2.266,
-                            5.437,
-                            4.921],
-                        label: "tweede meeting",
-                        backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                        borderColor: 'rgb(54, 162, 235)',
-                        pointBackgroundColor: 'rgb(54, 162, 235)',
-                        pointBorderColor: '#fff',
-                        pointHoverBackgroundColor: '#fff',
-                        pointHoverBorderColor: 'rgb(54, 162, 235)'
-                    }
-                ]
-            };
-            config = {
-                type: 'radar',
-                data: data,
+    // UpdateReccomandation(SelectedStudent);
+    //
+    // document.querySelector(".myChart").innerHTML = '<canvas id="myChart"></canvas>';
+    //
+    // ctx = document.getElementById("myChart");
+    //
+    // labels = [
+    //     'openness',
+    //     'cultural empathy',
+    //     'openmindness',
+    //     'adaptability',
+    //     'flexibility',
+    //     'emotional stability',
+    //     'social initiative'
+    // ]
 
-            }
-            myChart = new Chart(ctx, config);
-    }
+    // data = {
+    //     labels,
+    //     datasets: [
+    //         {
+    //             data: [
+    //                 5.926,
+    //                 5.926,
+    //                 5.151,
+    //                 3.773,
+    //                 2.664,
+    //                 3.65,
+    //                 5.146],
+    //             label: "eerste meeting",
+    //             backgroundColor: 'rgba(255, 99, 132, 0.2)',
+    //             borderColor: 'rgb(255, 99, 132)',
+    //             pointBackgroundColor: 'rgb(255, 99, 132)',
+    //             pointBorderColor: '#fff',
+    //             pointHoverBackgroundColor: '#fff',
+    //             pointHoverBorderColor: 'rgb(255, 99, 132)'
+    //         }, {
+    //             data: [
+    //                 5.879,
+    //                 5.437,
+    //                 6.275,
+    //                 3.324,
+    //                 2.266,
+    //                 4.174,
+    //                 4.921],
+    //             label: "tweede meeting",
+    //             backgroundColor: 'rgba(54, 162, 235, 0.2)',
+    //             borderColor: 'rgb(54, 162, 235)',
+    //             pointBackgroundColor: 'rgb(54, 162, 235)',
+    //             pointBorderColor: '#fff',
+    //             pointHoverBackgroundColor: '#fff',
+    //             pointHoverBorderColor: 'rgb(54, 162, 235)'
+    //         }
+    //     ]
+    // };
+    // config = {
+    //     type: 'radar',
+    //     data: data,
+    //
+    // }
+    // myChart = new Chart(ctx, config);
+
+    // switch (SelectedStudent) {
+    //     case 'Jane Doe':
+    //         data = {
+    //             labels,
+    //             datasets: [
+    //                 {
+    //                     data: [
+    //                         5.926,
+    //                         5.926,
+    //                         5.151,
+    //                         3.773,
+    //                         2.664,
+    //                         3.65,
+    //                         5.146],
+    //                     label: "First measurement",
+    //                     backgroundColor: 'rgba(255, 99, 132, 0.2)',
+    //                     borderColor: 'rgb(255, 99, 132)',
+    //                     pointBackgroundColor: 'rgb(255, 99, 132)',
+    //                     pointBorderColor: '#fff',
+    //                     pointHoverBackgroundColor: '#fff',
+    //                     pointHoverBorderColor: 'rgb(255, 99, 132)'
+    //                 }, {
+    //                     data: [
+    //                         5.879,
+    //                         5.437,
+    //                         6.275,
+    //                         3.324,
+    //                         2.266,
+    //                         4.174,
+    //                         4.921],
+    //                     label: "Second measurement",
+    //                     backgroundColor: 'rgba(54, 162, 235, 0.2)',
+    //                     borderColor: 'rgb(54, 162, 235)',
+    //                     pointBackgroundColor: 'rgb(54, 162, 235)',
+    //                     pointBorderColor: '#fff',
+    //                     pointHoverBackgroundColor: '#fff',
+    //                     pointHoverBorderColor: 'rgb(54, 162, 235)'
+    //                 }
+    //             ]
+    //         };
+    //         config = {
+    //             type: 'radar',
+    //             data: data,
+    //
+    //         }
+    //         myChart = new Chart(ctx, config);
+    //     case 'Jan Kaas':
+    //         data = {
+    //             labels,
+    //             datasets: [
+    //                 {
+    //                     data: [
+    //                         5.383,
+    //                         5.44,
+    //                         6.257,
+    //                         3.093,
+    //                         3.073,
+    //                         4.336,
+    //                         6.236],
+    //                     label: "First measurement",
+    //                     backgroundColor: 'rgba(255, 99, 132, 0.2)',
+    //                     borderColor: 'rgb(255, 99, 132)',
+    //                     pointBackgroundColor: 'rgb(255, 99, 132)',
+    //                     pointBorderColor: '#fff',
+    //                     pointHoverBackgroundColor: '#fff',
+    //                     pointHoverBorderColor: 'rgb(255, 99, 132)'
+    //                 }, {
+    //                     data: [
+    //                         5.224,
+    //                         5.819,
+    //                         5.308,
+    //                         3.452,
+    //                         3.751,
+    //                         4.056,
+    //                         4.523],
+    //                     label: "Second measurement",
+    //                     backgroundColor: 'rgba(54, 162, 235, 0.2)',
+    //                     borderColor: 'rgb(54, 162, 235)',
+    //                     pointBackgroundColor: 'rgb(54, 162, 235)',
+    //                     pointBorderColor: '#fff',
+    //                     pointHoverBackgroundColor: '#fff',
+    //                     pointHoverBorderColor: 'rgb(54, 162, 235)'
+    //                 }
+    //             ]
+    //         };
+    //         config = {
+    //             type: 'radar',
+    //             data: data,
+    //
+    //         }
+    //
+    //         myChart = new Chart(ctx, config);
+    //     case 'Jaap Doe':
+    //         data = {
+    //             labels,
+    //             datasets: [
+    //                 {
+    //                     data: [
+    //                         6.085,
+    //                         5.662,
+    //                         6.188,
+    //                         3.954,
+    //                         2.532,
+    //                         3.766,
+    //                         4.711],
+    //                     label: "First measurement",
+    //                     backgroundColor: 'rgba(255, 99, 132, 0.2)',
+    //                     borderColor: 'rgb(255, 99, 132)',
+    //                     pointBackgroundColor: 'rgb(255, 99, 132)',
+    //                     pointBorderColor: '#fff',
+    //                     pointHoverBackgroundColor: '#fff',
+    //                     pointHoverBorderColor: 'rgb(255, 99, 132)'
+    //                 }, {
+    //                     data: [
+    //                         6.107,
+    //                         6.836,
+    //                         4.712,
+    //                         3.8,
+    //                         3.287,
+    //                         3.261,
+    //                         5.269],
+    //                     label: "Second measurement",
+    //                     backgroundColor: 'rgba(54, 162, 235, 0.2)',
+    //                     borderColor: 'rgb(54, 162, 235)',
+    //                     pointBackgroundColor: 'rgb(54, 162, 235)',
+    //                     pointBorderColor: '#fff',
+    //                     pointHoverBackgroundColor: '#fff',
+    //                     pointHoverBorderColor: 'rgb(54, 162, 235)'
+    //                 }
+    //             ]
+    //         };
+    //         config = {
+    //             type: 'radar',
+    //             data: data,
+    //
+    //         }
+    //         myChart = new Chart(ctx, config);
+    //     case 'Ellen Steven':
+    //         data = {
+    //             labels,
+    //             datasets: [
+    //                 {
+    //                     data: [
+    //                         5.93,
+    //                         6.322,
+    //                         5.43,
+    //                         4.451,
+    //                         2.855,
+    //                         4.623,
+    //                         4.496],
+    //                     label: "First measurement",
+    //                     backgroundColor: 'rgba(255, 99, 132, 0.2)',
+    //                     borderColor: 'rgb(255, 99, 132)',
+    //                     pointBackgroundColor: 'rgb(255, 99, 132)',
+    //                     pointBorderColor: '#fff',
+    //                     pointHoverBackgroundColor: '#fff',
+    //                     pointHoverBorderColor: 'rgb(255, 99, 132)'
+    //                 }, {
+    //                     data: [
+    //                         6.235,
+    //                         6.625,
+    //                         5.199,
+    //                         3.759,
+    //                         3.539,
+    //                         4.021,
+    //                         5.162],
+    //                     label: "Second measurement",
+    //                     backgroundColor: 'rgba(54, 162, 235, 0.2)',
+    //                     borderColor: 'rgb(54, 162, 235)',
+    //                     pointBackgroundColor: 'rgb(54, 162, 235)',
+    //                     pointBorderColor: '#fff',
+    //                     pointHoverBackgroundColor: '#fff',
+    //                     pointHoverBorderColor: 'rgb(54, 162, 235)'
+    //                 }
+    //             ]
+    //         };
+    //         config = {
+    //             type: 'radar',
+    //             data: data,
+    //
+    //         }
+    //         myChart = new Chart(ctx, config);
+    // }
 
 }
 

@@ -3,9 +3,13 @@ package nl.hu.consultant.skill.domain;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity
+@Table(name = "Progress")
 public class Progress {
     @Id
     @GeneratedValue
@@ -13,37 +17,41 @@ public class Progress {
     private int id;
 
     @Setter @Getter
-    private int openness;
+    private double openness;
 
     @Setter @Getter
-    private int culturalEmpathy;
+    private double culturalEmpathy;
 
     @Setter @Getter
-    private int openmindness;
+    private double openmindness;
 
     @Setter @Getter
-    private int adaptability;
+    private double adaptability;
 
     @Setter @Getter
-    private int flexibility;
+    private double flexibility;
 
     @Setter @Getter
-    private int emotionalStability;
+    private double emotionalStability;
 
     @Setter @Getter
-    private int socialInitiative;
+    private double socialInitiative;
+
+    @Setter @Getter
+    private int userId;
 
     public Progress() {
     }
 
-    public Progress(int id,
-                    int openness,
-                    int culturalEmpathy,
-                    int openmindness,
-                    int adaptability,
-                    int flexibility,
-                    int emotionalStability,
-                    int socialInitiative) {
+    public Progress(
+            int id,
+            double openness,
+            double culturalEmpathy,
+            double openmindness,
+            double adaptability,
+            double flexibility,
+            double emotionalStability,
+            double socialInitiative) {
         this.id = id;
         this.openness = openness;
         this.culturalEmpathy = culturalEmpathy;
@@ -52,5 +60,41 @@ public class Progress {
         this.flexibility = flexibility;
         this.emotionalStability = emotionalStability;
         this.socialInitiative = socialInitiative;
+    }
+
+    public Progress(
+            int id,
+            double openness,
+            double culturalEmpathy,
+            double openmindness,
+            double adaptability,
+            double flexibility,
+            double emotionalStability,
+            double socialInitiative,
+            int userId) {
+        this.id = id;
+        this.openness = openness;
+        this.culturalEmpathy = culturalEmpathy;
+        this.openmindness = openmindness;
+        this.adaptability = adaptability;
+        this.flexibility = flexibility;
+        this.emotionalStability = emotionalStability;
+        this.socialInitiative = socialInitiative;
+        this.userId = userId;
+    }
+
+    @Override
+    public String toString() {
+        return "Progress{" +
+                "id=" + id +
+                ", openness=" + openness +
+                ", culturalEmpathy=" + culturalEmpathy +
+                ", openmindness=" + openmindness +
+                ", adaptability=" + adaptability +
+                ", flexibility=" + flexibility +
+                ", emotionalStability=" + emotionalStability +
+                ", socialInitiative=" + socialInitiative +
+                ", userId=" + userId +
+                '}';
     }
 }
